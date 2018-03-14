@@ -1,0 +1,131 @@
+\documentclass[11pt,letterpaper]{article}
+\oddsidemargin 0in
+\evensidemargin 0in
+\textwidth 6.5in
+\topmargin -0.5in
+\textheight 9.0in
+\usepackage{hyperref}
+\usepackage{mathptmx}
+\usepackage{textcomp}
+%\usepackage{graphicx}
+\usepackage[round]{natbib} % for bibliographic references
+\usepackage[usenames,dvipsnames]{xcolor}
+\newcommand{\blue}[1]{\textcolor{RoyalBlue}{#1}}
+\newcommand{\fillme}[1]{\blue{\texttt{[Insert #1]}}}
+\newcommand{\instructions}[1]{\blue{\textit{#1}}}
+% Uncomment the next two lines (remove the leading %-signs)  if you want the instructions to disappear.
+\renewcommand{\instructions}[1]{}
+\renewcommand{\fillme}[1]{}
+
+\begin{document}
+\title{\textbf{The Internet Antitoxin: Toxic Comment Classification to Combat Trolls}}
+\author{Zubin Pahuja \\ \href{mailto:zpahuja2@illinois.edu}{zpahuja2}
+    \and Sarah Schieferstein \\ \href{mailto:schfrst2@illinois.edu}{schfrst2}
+    \and Kyo Kim \\ \href{mailto:kkim103@illinois.edu}{kkim103}
+    \and Raghav Gurbaxani \\ \href{mailto:raghavg3@illinois.edu}{raghavg3}
+    }
+
+\maketitle
+
+\instructions{CS546 involves a research project. This is a template
+  for the initial proposal, which will be help us make sure your
+  project is both suitable, feasible and interesting.
+You can just uncomment the following two lines in the preamble of the .tex file for the instructions to disappear:
+\texttt{\%$\backslash$renewcommand\{$\backslash$instructions\}[1]\{\}}~ and \texttt{\%$\backslash$renewcommand\{$\backslash$fillme\}[1]\{\}}
+}
+\section*{Task}
+\instructions{Describe the task you want to tackle in your project.}
+Discussing things you care about online can be difficult. The threat of abuse and harassment online means that many people stop expressing themselves and give up on seeking different opinions. Platforms struggle to effectively facilitate conversations, leading many communities to limit or completely shut down user comments.
+
+Existing automated approaches are error-prone, and they don’t allow users to select which types of toxicity they are interested in finding (e.g. some platforms may be fine with profanity, but not with other types of toxic content). Our task is to build a multi-headed model that’s capable of detecting different types of of toxicity like threats, obscenity, insults, and identity-based hate better than Jigsaw\textquotesingle s Perspective API. We are using a dataset of comments from Wikipedia\textquotesingle s talk page edits. Improvements to the current model will hopefully help increase participation, quality, and empathy in online conversations at scale.
+
+Going above and beyond the Kaggle contest, we intend to try our model on different relevant datasets with different user demographics, size of dataset, features, structure (such as threaded comments), language and purpose for moderation. One such dataset of interest to tackle the problem of automated moderation is Reddit May 2015 comments dataset, which includes removed comments and the cause for their removal. Another dataset in Greek from Gazzetta sports news portal can be used to assess multi-lingual model.
+
+A potential goal is to build universal models that can generalize well to other platforms to save the cost and time to manually annotate datasets and train task-specific models.
+
+\section*{Background}
+\instructions{Has there been any prior work on this task? If so,
+  provide references where available}
+  Most commercial systems only use a list of profane words, but the comments such as the example below can easily slip through.
+
+
+    $$\textit{``I sincerely wish that your happy and prosperous life does not last very long!''}$$
+
+Early approaches to comment abuse classification began with Yin, et al., which used an SVM and applied TF-IDF to the features. Recently, deep learning for related fields such as sentiment analysis has proven quite fruitful. RNNs have been known to perform well in sentiment analysis tasks as they use a sequencing model.  However, due to the vanishing gradient problem LSTMs are currently the state of the art. Other researchers have used CNNs in sentiment analysis varying from character to sentence level embeddings.
+
+More recently, Straintek, a startup in Greece funded by Google’s DNI has published three promising papers in ACL and EMNLP in 2017 as well as demos for multiple platforms on their website \cite{demo} .
+
+\section*{Data and Evaluation}
+\instructions{Do you have data to train and test your system on? How
+  will you evaluate your system?}
+
+  \begin{enumerate}
+  \item Jigsaw Toxic Comment Classification Challenge on Kaggle (\cite{kaggle}): contains data from Wikipedia Talk page edits
+  \item Wikipedia Detox (\cite{wikidetoxdatarelease}): data from Wikipedia Talk page with annotations for personal attacks (\cite{wikidetoxpersonalattacks}), aggression (\cite{wikidetoxaggression}) and toxicity (\cite{wikidetoxtoxicity})
+  \item Reddit comments dataset (\cite{redditdata1} and \cite{redditdata2})
+  \item Cyber Bullying datasets
+    \begin{enumerate}
+    \item \cite{cyberbull1}
+    \item \cite{cyberbull2}
+    \end{enumerate}
+  \item Hate Speech (\cite{hateoffensive})
+  \item Terrorism (\cite{terrorism})
+  \item Trolling (\cite{trolololo})
+  \item Gazzetta sports news portal dataset in Greek (\cite{greekdataset})
+  \end{enumerate}
+
+
+\section*{Approach}
+\instructions{Describe how you want to tackle this task}
+We intend to use bag-of-words multilayer perceptron, CNN, LSTM, GRU and hybrid or ensemble models with word as well as character embeddings and do comparative analysis on how well the techniques learn and generalize on different datasets, different numbers of training examples etc.
+
+We are also interested in semi-supervised learning and dataless classification for platforms with little or none annotated data.
+
+Kaggle contest platform provides us with an evaluation metric for the Wikipedia Talks dataset. For automatic content moderation, we would evaluate on both probabilistic toxicity score as well as cause for removal. Note: these tasks are different and hence, their evaluation metric will be different as well. For example, the Kaggle contest is a multi-label classification whereas Reddit would be a multi-class classification problem.
+
+\section*{To Do}
+\instructions{Get started by making a to-do list. If you have a group
+  project: who will do what? Set yourself deadlines. Here are a few
+  items that might appear on your to-do list}
+\begin{enumerate}
+
+\item Explore the datasets mentioned above and how similar or dissimilar the approach may be
+\item Establish a baseline: Logistic regression or keyword based approach.
+\item Participate in Kaggle contest. Try different neural  architectures such as LSTM or GRU. and engineer our model’s hyper-parameters for optimal performance on the contest
+\item Decide the most efficient evaluation metric.
+\item Next, we will explore more open-ended territory such as application to other datasets and the problem of automatic content moderation on larger dataset such as Reddit.
+\item We also intend to apply our model trained on a large dataset for classification on a smaller dataset (similar to transfer learning). Or try a dataless or semi-supervised approach.
+\item We also intend to apply our model for detection of hate-speech and white nationalism.
+\end{enumerate}
+
+\section*{Concerns}
+\instructions{Let us know if you have any concerns, e.g. about the
+  feasibility of your project, or the availability of a suitable
+  training data}
+
+ \begin{enumerate}
+     \item Problems for different platforms can be quite different as the features and labels will be different. So, evaluating a model trained on one dataset on another for generalizability will be difficult.
+    \item Datasets may not be balanced (down sampling  dataset or varying precision recall)
+ \end{enumerate}
+
+\section*{\instructions{Bibliography}}
+\instructions{Do not  forget to include bibliographic references. You need to create your own .bib file. If you call it {\tt mybib.bib}
+  and put it in the same directory as this {\tt .tex} file, add
+  {\tt$\backslash$bibliography\{mybib\}} before
+  {\tt$\backslash$end\{document\}}.
+This template uses the natbib package, which allows you use a citation
+format that includes author names and years (instead of numerical
+references).  You can use the {\tt$\backslash$cite\{\}} command (
+``\cite{Mins:69} presented a damaging critique of the perceptron'')
+or {\tt$\backslash$citep\{\}} (``A damaging critique of the perceptron
+\citep{Mins:69} had long-lasting effects on the development of AI'').
+(NB: for a lot of papers on the ACL anthology, you can get the BibTeX
+entry by changing the .pdf extension on the URL to  .bib,
+e.g. from \url{http://aclweb.org/anthology/P/P17/P17-1001.pdf} to
+\url{http://aclweb.org/anthology/P/P17/P17-1001.bib})
+}
+\bibliographystyle{plainnat}
+\bibliography{mybib}
+\nocite{*}
+
+\end{document}
