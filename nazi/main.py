@@ -217,6 +217,8 @@ def evaluate(data_source, test=False):
                 sentences = torch.cat((sentences,output.transpose(0,1)),0)
             #targets = targets[:,perm_index]
         #TODO: put the sentence model here
+	if sentences is None:
+            continue
         y_pred, hidden_sent, _ = sent_attn_model(sentences, hidden_sent)
 
         output_flat = y_pred.view(-1, nlabels)
