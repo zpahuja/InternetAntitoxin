@@ -95,7 +95,7 @@ class Corpus(object):
             ids = torch.LongTensor(tokens)
             idxs = torch.LongTensor(user_idx+1)
             labels = torch.LongTensor(user_idx+1)
-            print(user_idx+1)
+            #print(user_idx+1)
             token = 0
             prev = None
 
@@ -121,7 +121,7 @@ class Corpus(object):
                     user_idx += 1
                     prev = row[2]
                     labels[user_idx] = int(label)
-                    print(token, "NEW USER")
+                    #print(token, "NEW USER")
                     idxs[user_idx] = token
                 
 

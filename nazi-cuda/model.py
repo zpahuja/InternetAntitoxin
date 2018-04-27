@@ -141,12 +141,15 @@ class RNNModelSentence(nn.Module):
         self.linear_out = nn.Linear(nhid, nlabel) #goes from attention to label probability vector
 
         self.softmax = nn.Softmax(dim=0)
+        self.softmax2 = nn.Softmax(dim=1)
+        self.logsoftmax = nn.LogSoftmax(dim=1)
 
         self.init_weights()
 
         self.rnn_type = rnn_type
         self.nhid = nhid
         self.nlayers = nlayers
+
 
         
     def init_weights(self):
@@ -155,15 +158,16 @@ class RNNModelSentence(nn.Module):
 
 
     def forward(self, input, hidden):
-        output, hidden = self.rnn(input, hidden)
-        output = output.unsqueeze(1)
+        output, hidden = self.rnn(self.drop(input), hidden)
+        output = self.drop(output.unsqueeze(1))
         output_affine = torch.tanh(self.linear_attention(output))
         sent_attn = torch.matmul(output_affine, self.us)
         sent_attn_norm = self.softmax(sent_attn)
         sent_attn_vector = self.weighted_sum_attn(output, sent_attn_norm)
 
         feature_to_classification = self.linear_out(sent_attn_vector)
-        return F.log_softmax(feature_to_classification,dim=1), hidden, sent_attn_norm
+        #print("SOFTMAX:",self.softmax2(feature_to_classification),"LOGSOFTMAX:",self.logsoftmax(feature_to_classification))
+        return self.logsoftmax(feature_to_classification), hidden, sent_attn_norm
 
     #hopefully should be 1 bsz? always?
     def init_hidden(self, bsz):

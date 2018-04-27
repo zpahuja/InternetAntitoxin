@@ -5,8 +5,9 @@ import csv
 assert os.path.exists('dataset.csv')
 
 csvfile = open('dataset.csv','r').readlines()
-n = len(csvfile)
-#n=10000
+#n = len(csvfile)
+n=10
+#n=100000
 c = 0
 start = 0
 train_end = int(.6*n)
