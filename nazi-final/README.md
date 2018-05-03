@@ -28,7 +28,7 @@ adl.ipynb - Baseline, but uses abbreviations and echo as discrete feature concat
 
 adl-user.ipynb - Like above, but adds the features to the user representation if they use ADL-defined words. Also has code in place to easily find image vectors, but it's unused because it gave poor results.
 
-dataset.csv - Full data.
+dataset.rar - Full data.
 
 train,test.csv - Data cut in two.
 
